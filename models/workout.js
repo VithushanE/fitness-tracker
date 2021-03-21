@@ -1,3 +1,6 @@
+const mongoose = require('mongoose'); 
+const Schema = mongoose.Schema; 
+
 async function initWorkout() {
   const lastWorkout = await API.getLastWorkout();
   console.log("Last workout:", lastWorkout);
@@ -81,4 +84,67 @@ function renderNoWorkoutText() {
   container.appendChild(p);
 }
 
-initWorkout();
+// initWorkout();
+
+const workout = new Schema ( 
+  {
+    day: {
+      type: Date,
+      default: () => new Date()
+    }, 
+    excerises: [
+      {
+        type: {
+          type: String, 
+          trim: true, 
+          required: "Enter the excerise type"
+        }, 
+        name: {
+          type: String, 
+          trim: true, 
+          required: "Enter the excerise name"
+        }, 
+        duration: {
+          type: Number, 
+          required: "Enter an excerise duration in minutes"
+        }, 
+        weight: {
+          type: Number
+        }, 
+        reps: {
+          type: Number
+        }, 
+        sets: {
+          type: Number
+        }, 
+        distance: {
+          type: Number
+        }
+
+      }
+    ]
+  }, 
+
+{
+  toJSON: {
+    virtuals: truw
+  }
+}
+);
+
+workoutSchema.virtual('totalDuration').get(function () {
+  return this.excerises.reduce((total, excerise) => {
+    return total + excerise.duration; 
+  }, 0);
+}); 
+
+const Workout = mongoose.model("workout", workoutSchema)
+
+module.exxports = Workout; 
+
+
+
+
+
+
+

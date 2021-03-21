@@ -11,3 +11,6 @@ async function init() {
   }
 }
 
+modeule.exports ={
+  workout: require('./workout')
+}
